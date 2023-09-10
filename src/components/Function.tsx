@@ -12,6 +12,8 @@ import { Label } from "./ui/label";
 import { useContractRead } from "wagmi";
 import { useState } from "react";
 import { Skeleton } from "./ui/skeleton";
+import { Badge } from "./ui/badge";
+import { STATE_MUTABILITY_COLOR } from "@/lib/const";
 
 type Props = {
   functionABIs: AbiFunction[];
@@ -34,7 +36,7 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
   });
 
   if (!functionABI) return;
-  const { name, inputs, stateMutability } = functionABI;
+  const { name, inputs, stateMutability, outputs } = functionABI;
 
   const [args, setArgs] = useState(
     inputs.length === 0
@@ -50,8 +52,6 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
         )
   );
 
-  console.log({ inputs });
-
   const { data, isLoading } = useContractRead({
     address: address as Address,
     abi: functionABIs as unknown[],
@@ -64,7 +64,17 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
     <div className="p-8 w-full">
       <Card className="">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-mono">{name}</CardTitle>
+          <CardTitle className="text-2xl font-mono flex gap-4 items-center">
+            {name}{" "}
+            <Badge
+              variant="default"
+              style={{
+                backgroundColor: STATE_MUTABILITY_COLOR[stateMutability],
+              }}
+            >
+              {stateMutability}
+            </Badge>
+          </CardTitle>
           <CardDescription></CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">

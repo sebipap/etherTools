@@ -1,10 +1,10 @@
 import { WagmiConfig, configureChains, createConfig, mainnet } from "wagmi";
-import { createPublicClient, http } from "viem";
-import ABIDecoder from "./components/ABIDecorder";
+
+import Contract from "./components/Contract";
 import { optimism } from "viem/chains";
 import { publicProvider } from "wagmi/providers/public";
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
+const { publicClient, webSocketPublicClient } = configureChains(
   [mainnet, optimism],
   [publicProvider()]
 );
@@ -18,7 +18,7 @@ function App() {
   return (
     <WagmiConfig config={config}>
       <div className=" ">
-        <ABIDecoder />
+        <Contract />
       </div>
     </WagmiConfig>
   );

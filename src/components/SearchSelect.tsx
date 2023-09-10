@@ -21,7 +21,7 @@ type Props = {
   value?: string;
   onChange: (value: string) => void;
   placeholder: string;
-  className?: string;
+  children?: React.ReactNode;
 };
 
 const SearchSelect = ({
@@ -29,7 +29,7 @@ const SearchSelect = ({
   value,
   placeholder,
   onChange,
-  className,
+  children,
 }: Props) => {
   const [open, setOpen] = useState(false);
 
@@ -40,7 +40,7 @@ const SearchSelect = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className=" justify-between"
         >
           {value
             ? options.find((op) => op.value === value)?.label
@@ -48,7 +48,7 @@ const SearchSelect = ({
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-[0.5] m-2 mt-0 ">
+      <PopoverContent className="p-2 m-2 mt-0 flex flex-col gap-2">
         <Command className="overflow-scroll">
           <CommandInput placeholder={placeholder} className="h-9" />
           <CommandEmpty>Nothing found.</CommandEmpty>
@@ -72,6 +72,7 @@ const SearchSelect = ({
               </CommandItem>
             ))}
           </CommandGroup>
+          {children}
         </Command>
       </PopoverContent>
     </Popover>
