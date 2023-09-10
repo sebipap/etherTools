@@ -15,7 +15,6 @@ const FunctionData = ({ abi, data }: { abi: Abi; data: Hex }) => {
     try {
       setFunctionData(decodeFunctionData({ abi, data }));
     } catch {
-      console.log("hello");
       setFunctionData(undefined);
     }
   }, [abi, data]);
