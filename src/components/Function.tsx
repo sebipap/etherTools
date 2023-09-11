@@ -68,11 +68,7 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
     );
   }, [functionABI]);
 
-  const {
-    data: readData,
-    isLoading: readLoading,
-    error: readError,
-  } = useContractRead({
+  const { data: readData, isLoading: readLoading } = useContractRead({
     address: address as Address,
     abi: functionABIs as unknown[],
     functionName: functionABI.name,
@@ -82,7 +78,7 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
 
   const {
     writeAsync,
-    error: writeError,
+
     isLoading: writeLoading,
   } = useContractWrite({
     address: address as Address,
