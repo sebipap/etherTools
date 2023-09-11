@@ -136,83 +136,76 @@ const Contract = () => {
     <div className="overflow flex h-[100vw] w-[100vw]">
       <Card className="flex h-[100vh] w-[300px] flex-col overflow-scroll border-r">
         <div className="flex flex-col gap-2 p-4">
-          {abiOptions.length > 0 ? (
-            <SearchSelect
-              options={abiOptions}
-              onChange={(value) => {
-                setContractName(value);
-                if (!contracts[value]) return;
+          <SearchSelect
+            options={abiOptions}
+            onChange={(value) => {
+              setContractName(value);
+              if (!contracts[value]) return;
 
-                setAbi(contracts[value].abi);
-                setAddress(contracts[value].address);
-              }}
-              value={contractName}
-              placeholder="Select ABI"
-            >
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="ghost" className="gap-2">
-                    New
-                    <FileIcon />
+              setAbi(contracts[value].abi);
+              setAddress(contracts[value].address);
+            }}
+            value={contractName}
+            placeholder="Select ABI"
+          >
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" className="gap-2">
+                  New
+                  <FileIcon />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Load ABI</DialogTitle>
+                  <DialogDescription>
+                    Upload an ABI to interact with a contract.
+                  </DialogDescription>
+                </DialogHeader>
+                <form
+                  className="grid gap-4 py-4"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    save();
+                  }}
+                >
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="name" className="text-right">
+                      Name
+                    </Label>
+                    <Input
+                      id="name"
+                      value={contractName}
+                      onChange={(e) => setContractName(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label className="text-right">Address</Label>
+                    <Input
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      className="col-span-3 max-h-[100px] font-mono"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label className="text-right">ABI</Label>
+                    <Textarea
+                      value={abiString}
+                      onChange={(e) => setAbiString(e.target.value)}
+                      className="col-span-3 max-h-[100px] font-mono"
+                    />
+                    <div className="grid gap-2">{abiString && error}</div>
+                  </div>
+                </form>
+                <DialogFooter>
+                  <Button type="submit" onClick={save}>
+                    Save changes
                   </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Load ABI</DialogTitle>
-                    <DialogDescription>
-                      Upload an ABI to interact with a contract.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <form
-                    className="grid gap-4 py-4"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      save();
-                    }}
-                  >
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="name" className="text-right">
-                        Name
-                      </Label>
-                      <Input
-                        id="name"
-                        value={contractName}
-                        onChange={(e) => setContractName(e.target.value)}
-                        className="col-span-3"
-                      />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label className="text-right">Address</Label>
-                      <Input
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        className="col-span-3 max-h-[100px] font-mono"
-                      />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label className="text-right">ABI</Label>
-                      <Textarea
-                        value={abiString}
-                        onChange={(e) => setAbiString(e.target.value)}
-                        className="col-span-3 max-h-[100px] font-mono"
-                      />
-                      <div className="grid gap-2">{abiString && error}</div>
-                    </div>
-                  </form>
-                  <DialogFooter>
-                    <Button type="submit" onClick={save}>
-                      Save changes
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </SearchSelect>
-          ) : (
-            <Button variant="ghost" className="gap-2">
-              New
-              <FileIcon />
-            </Button>
-          )}
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </SearchSelect>
         </div>
         {abi && (
           <div className="flex flex-wrap gap-2 overflow-x-scroll border-t">
