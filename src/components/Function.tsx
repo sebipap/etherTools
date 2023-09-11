@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { Badge } from "./ui/badge";
 import { STATE_MUTABILITY_COLOR } from "@/lib/const";
+import Output from "./Output";
 
 type Props = {
   functionABIs: AbiFunction[];
@@ -79,14 +80,14 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
         </CardHeader>
         <CardContent className="grid gap-4">
           {inputs.map(({ type, name }, i) => (
-            <div className="grid gap-2">
+            <div className="grid gap-2" key={name}>
               <Label htmlFor="email">{name}</Label>
               <Input
                 type="text"
                 value={args?.[i]?.toString()}
                 onChange={(e) => {
                   const newArgs = [...(args || [])];
-                  newArgs[i] = e.target.value as any;
+                  newArgs[i] = e.target.value;
                   setArgs(newArgs);
                 }}
                 placeholder={`${type} ${name}`}
@@ -96,7 +97,7 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
           {inputs.length === (args?.length || 0) && isLoading ? (
             <Skeleton />
           ) : (
-            <p className="overflow-scroll">{String(data)}</p>
+            <Output outputs={outputs} data={data} />
           )}
           {stateMutability !== "view" && <Button>Send</Button>}
         </CardContent>

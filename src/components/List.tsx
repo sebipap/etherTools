@@ -44,7 +44,7 @@ const List = ({
         const Icon = active ? DotFilledIcon : DotIcon;
         return (
           <Button
-            className={`text-left align justify-start w-full font-mono `}
+            className={`text-left align justify-start w-full font-mono`}
             variant={active ? "outline" : "ghost"}
             onClick={() => {
               onChange(value);
