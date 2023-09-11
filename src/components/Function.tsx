@@ -10,7 +10,7 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useContractRead } from "wagmi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { Badge } from "./ui/badge";
 import { STATE_MUTABILITY_COLOR } from "@/lib/const";
@@ -39,19 +39,23 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
   if (!functionABI) return;
   const { name, inputs, stateMutability, outputs } = functionABI;
 
-  const [args, setArgs] = useState<unknown[] | undefined>(
-    inputs.length === 0
-      ? undefined
-      : inputs.map(({ type }) =>
-          type === "bigint"
-            ? 0n
-            : type === "string"
-            ? ""
-            : type === "address"
-            ? "0x660e2fC185a9fFE722aF253329CEaAD4C9F6F928"
-            : 0n
-        )
-  );
+  const [args, setArgs] = useState<unknown[] | undefined>();
+
+  useEffect(() => {
+    setArgs(
+      inputs.length === 0
+        ? undefined
+        : inputs.map(({ type }) =>
+            type === "bigint"
+              ? 0n
+              : type === "string"
+              ? ""
+              : type === "address"
+              ? "0x660e2fC185a9fFE722aF253329CEaAD4C9F6F928"
+              : 0n
+          )
+    );
+  }, [functionABI]);
 
   const { data, isLoading } = useContractRead({
     address: address as Address,
