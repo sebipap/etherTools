@@ -136,7 +136,7 @@ const Contract = () => {
     <div className="overflow flex h-[100vw] w-[100vw]">
       <Card className="flex h-[100vh] w-[300px] flex-col overflow-scroll border-r">
         <div className="flex flex-col gap-2 p-4">
-          {abiOptions.length > 0 && (
+          {abiOptions.length > 0 ? (
             <SearchSelect
               options={abiOptions}
               onChange={(value) => {
@@ -207,6 +207,11 @@ const Contract = () => {
                 </DialogContent>
               </Dialog>
             </SearchSelect>
+          ) : (
+            <Button variant="ghost" className="gap-2">
+              New
+              <FileIcon />
+            </Button>
           )}
         </div>
         {abi && (
