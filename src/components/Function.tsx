@@ -39,7 +39,7 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
   if (!functionABI) return;
   const { name, inputs, stateMutability, outputs } = functionABI;
 
-  const [args, setArgs] = useState(
+  const [args, setArgs] = useState<unknown[] | undefined>(
     inputs.length === 0
       ? undefined
       : inputs.map(({ type }) =>
@@ -62,10 +62,10 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
   });
 
   return (
-    <div className="p-8 w-full">
+    <div className="w-full p-8">
       <Card className="">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-mono flex gap-4 items-center">
+          <CardTitle className="flex items-center gap-4 font-mono text-2xl">
             {name}{" "}
             <Badge
               variant="default"

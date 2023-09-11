@@ -1,14 +1,6 @@
-import {
-  ArrowRightIcon,
-  CircleBackslashIcon,
-  DotFilledIcon,
-  DotIcon,
-  EyeOpenIcon,
-  PaperPlaneIcon,
-} from "@radix-ui/react-icons";
+import { DotFilledIcon, DotIcon } from "@radix-ui/react-icons";
 import { AbiStateMutability } from "abitype";
 import { Button } from "./ui/button";
-import { CircleIcon } from "lucide-react";
 import { STATE_MUTABILITY_COLOR } from "@/lib/const";
 
 type Props = {
@@ -19,23 +11,17 @@ type Props = {
   }[];
   value?: string;
   onChange: (value: string) => void;
-  placeholder: string;
   className?: string;
 };
 
-const STATE_MUTABILITY_ICON = {
-  nonpayable: CircleBackslashIcon,
-  payable: PaperPlaneIcon,
-  view: EyeOpenIcon,
-  pure: ArrowRightIcon,
-} as const;
+// const STATE_MUTABILITY_ICON = {
+//   nonpayable: CircleBackslashIcon,
+//   payable: PaperPlaneIcon,
+//   view: EyeOpenIcon,
+//   pure: ArrowRightIcon,
+// } as const;
 
-const List = ({
-  options,
-  value: selectedOption,
-  placeholder,
-  onChange,
-}: Props) => {
+const List = ({ options, value: selectedOption, onChange }: Props) => {
   return (
     <div className="flex flex-col">
       {options.map(({ value, label, stateMutability }) => {
@@ -44,14 +30,15 @@ const List = ({
         const Icon = active ? DotFilledIcon : DotIcon;
         return (
           <Button
-            className={`text-left align justify-start w-full font-mono`}
+            key={value}
+            className={`align w-full justify-start text-left font-mono`}
             variant={active ? "outline" : "ghost"}
             onClick={() => {
               onChange(value);
             }}
           >
             <Icon
-              className={`w-4 h-4 mr-2 `}
+              className={`mr-2 h-4 w-4 `}
               style={{
                 color: STATE_MUTABILITY_COLOR[stateMutability],
               }}

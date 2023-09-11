@@ -20,9 +20,10 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 
-const isAbi = (value: any): value is Abi => {
+const isAbi = (value: unknown): value is Abi => {
   if (!value) return false;
-  return value.every((x: any) => {
+  if (!Array.isArray(value)) return false;
+  return value.every((x) => {
     if (typeof x !== "object") return false;
     const { type } = x as {
       type: string;
@@ -132,9 +133,9 @@ const Contract = () => {
   };
 
   return (
-    <div className="flex w-[100vw] h-[100vw] overflow">
-      <Card className="w-[300px] h-[100vh] overflow-scroll border-r flex flex-col">
-        <div className="flex gap-2 flex-col p-4">
+    <div className="overflow flex h-[100vw] w-[100vw]">
+      <Card className="flex h-[100vh] w-[300px] flex-col overflow-scroll border-r">
+        <div className="flex flex-col gap-2 p-4">
           {abiOptions.length > 0 && (
             <SearchSelect
               options={abiOptions}
@@ -185,7 +186,7 @@ const Contract = () => {
                       <Input
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        className="font-mono max-h-[100px] col-span-3"
+                        className="col-span-3 max-h-[100px] font-mono"
                       />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -193,7 +194,7 @@ const Contract = () => {
                       <Textarea
                         value={abiString}
                         onChange={(e) => setAbiString(e.target.value)}
-                        className="font-mono max-h-[100px] col-span-3"
+                        className="col-span-3 max-h-[100px] font-mono"
                       />
                       <div className="grid gap-2">{abiString && error}</div>
                     </div>
@@ -209,12 +210,11 @@ const Contract = () => {
           )}
         </div>
         {abi && (
-          <div className="flex gap-2 flex-wrap border-t overflow-x-scroll">
+          <div className="flex flex-wrap gap-2 overflow-x-scroll border-t">
             <List
               value={functionSignature}
               onChange={handleFunctionSignatureChange}
               options={options || []}
-              placeholder="Select function"
             />
           </div>
         )}

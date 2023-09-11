@@ -25,24 +25,22 @@ const Output = ({
   data,
   outputs,
 }: {
-  data: any;
+  data: unknown;
   outputs: readonly AbiParameter[];
 }) => {
   if (data === undefined) return "No response";
   if (outputs.length === 0) return null;
-  if (outputs.length === 1) return String(data);
-
-  console.log({ data });
+  if (outputs.length === 1 || !Array.isArray(data)) return String(data);
 
   return (
     <Table className="font-mono">
       <TableBody>
-        {outputs.map(({ name, type, internalType }, index) => (
+        {outputs.map(({ name, type }, index) => (
           <TableRow key={name}>
             <TableCell>
               {name} <Badge variant="outline">{type}</Badge>{" "}
             </TableCell>
-            <TableCell>{<Data data={data[index]} type={type} />}</TableCell>
+            <TableCell>{<Data data={data?.[index]} type={type} />}</TableCell>
           </TableRow>
         ))}
       </TableBody>

@@ -37,7 +37,7 @@ const FunctionData = ({ abi, data }: { abi: Abi; data: Hex }) => {
   });
 
   return (
-    <div className="flex flex-col gap-5 my-10">
+    <div className="my-10 flex flex-col gap-5">
       <div>
         <Code text={`${functionName}(${stringifiedArgs?.join(",")})`} />
       </div>

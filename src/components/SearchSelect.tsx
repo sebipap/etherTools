@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/classnames-order */
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
