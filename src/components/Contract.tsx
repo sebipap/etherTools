@@ -33,7 +33,8 @@ const isAbi = (value: unknown): value is Abi => {
   });
 };
 
-const local = localStorage.getItem("abis");
+const localAbis = localStorage.getItem("abis");
+const localContractName = localStorage.getItem("contractName");
 
 const Contract = () => {
   const [abiString, setAbiString] = useState<string>("");
@@ -47,13 +48,15 @@ const Contract = () => {
   const [functionSignature, setFunctionSignature] = useState<string>();
 
   useEffect(() => {
-    if (!local) return;
-    try {
-      const obj = JSON.parse(local);
-      setContracts(obj);
-    } catch {
-      console.log("Invalid ABI");
+    if (localAbis) {
+      try {
+        const obj = JSON.parse(localAbis);
+        setContracts(obj);
+      } catch {
+        console.log("Invalid ABI");
+      }
     }
+    if (localContractName) handleContractNameChange(localContractName);
   }, []);
 
   useEffect(() => {
@@ -69,14 +72,17 @@ const Contract = () => {
   }, [abiString]);
 
   useEffect(() => {
-    if (!contracts) return;
-    const name = Object.keys(contracts)[0];
-    if (!name) return;
-    setAbi(contracts[name].abi);
-    setAddress(contracts[name].address);
-    setContractName(name);
+    if (!Object.keys(contracts).length) return;
+    setAbi(contracts[contractName].abi);
+    setAddress(contracts[contractName].address);
     localStorage.setItem("abis", JSON.stringify(contracts));
   }, [contracts]);
+
+  const handleContractNameChange = (name: string) => {
+    setContractName(name);
+
+    localStorage.setItem("contractName", name);
+  };
 
   const save = () => {
     if (!abi) return;
@@ -84,7 +90,7 @@ const Contract = () => {
       ...prev,
       [contractName.toLowerCase()]: { abi, address },
     }));
-    setContractName(contractName.toLowerCase());
+    handleContractNameChange(contractName.toLowerCase());
     const { abi: abi_, address: address_ } =
       Object.entries(contracts).find(
         ([k]) => k.toLowerCase === contractName.toLowerCase
@@ -140,9 +146,8 @@ const Contract = () => {
           <SearchSelect
             options={abiOptions}
             onChange={(value) => {
-              setContractName(value);
+              handleContractNameChange(value);
               if (!contracts[value]) return;
-
               setAbi(contracts[value].abi);
               setAddress(contracts[value].address);
             }}
