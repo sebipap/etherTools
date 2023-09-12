@@ -19,6 +19,7 @@ import { FileIcon } from "@radix-ui/react-icons";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 const isAbi = (value: unknown): value is Abi => {
   if (!value) return false;
@@ -150,7 +151,7 @@ const Contract = () => {
           >
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="ghost" className="gap-2">
+                <Button variant="ghost" className="flex gap-2">
                   New
                   <FileIcon />
                 </Button>
@@ -199,9 +200,11 @@ const Contract = () => {
                   </div>
                 </form>
                 <DialogFooter>
-                  <Button type="submit" onClick={save}>
-                    Save changes
-                  </Button>
+                  <DialogClose>
+                    <Button type="submit" onClick={save}>
+                      Save changes
+                    </Button>
+                  </DialogClose>
                 </DialogFooter>
               </DialogContent>
             </Dialog>

@@ -5,8 +5,7 @@ import { Badge } from "./ui/badge";
 const Data = ({ data, type }: { data: any; type: string }) => {
   if (type.includes("int")) return String(data);
   if (type === "address") return data;
-
-  if (type === "tuple")
+  if (type === "tuple") {
     return (
       <Table>
         <TableBody>
@@ -19,6 +18,9 @@ const Data = ({ data, type }: { data: any; type: string }) => {
         </TableBody>
       </Table>
     );
+  }
+  if (type === "tuple[]") return <Data data={data} type="tuple" />;
+  return String(data);
 };
 
 const Output = ({
@@ -28,21 +30,28 @@ const Output = ({
   data: unknown;
   outputs: readonly AbiParameter[];
 }) => {
-  if (data === undefined) return "No response";
+  if (data === undefined || data === null) return "No response";
   if (outputs.length === 0) return null;
-  if (outputs.length === 1 || !Array.isArray(data)) return String(data);
+  if (!Array.isArray(data)) return <Data data={data} type={outputs[0].type} />;
+  const multiple = data.length !== outputs.length;
 
   return (
     <Table className="font-mono">
       <TableBody>
-        {outputs.map(({ name, type }, index) => (
-          <TableRow key={name}>
-            <TableCell>
-              {name} <Badge variant="outline">{type}</Badge>{" "}
-            </TableCell>
-            <TableCell>{<Data data={data?.[index]} type={type} />}</TableCell>
-          </TableRow>
-        ))}
+        {data.map((dataPart, index) => {
+          const { type: outputType, name } = multiple
+            ? outputs[0]
+            : outputs[index];
+          const type = multiple ? outputType.replace("[]", "") : outputType;
+          return (
+            <TableRow key={`${name}-${index}`}>
+              <TableCell>
+                {name} <Badge variant="outline">{type}</Badge>{" "}
+              </TableCell>
+              <TableCell>{<Data data={dataPart} type={type} />}</TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );

@@ -158,9 +158,12 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
               <Input
                 type="text"
                 value={args?.[i]?.toString()}
-                onChange={(e) => {
+                onChange={({ target: { value } }) => {
                   const newArgs = [...(args || [])];
-                  newArgs[i] = e.target.value;
+                  const current = type.includes("[]")
+                    ? value.split(",")
+                    : value;
+                  newArgs[i] = current;
                   setArgs(newArgs);
                 }}
                 placeholder={`${type} ${name}`}
