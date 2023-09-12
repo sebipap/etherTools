@@ -1,7 +1,6 @@
 import { AbiFunction } from "abitype";
 import { useEffect, useMemo, useState } from "react";
 import { Abi } from "viem";
-import { Card } from "./ui/card";
 import Function from "./Function";
 import List from "./List";
 import SearchSelect from "./SearchSelect";
@@ -140,98 +139,104 @@ const Contract = () => {
   };
 
   return (
-    <div className="overflow flex h-[100vw] w-[100vw]">
-      <Card className="flex h-[100vh] w-[300px] flex-col overflow-scroll border-r">
-        <div className="flex flex-col gap-2 p-4">
-          <SearchSelect
-            options={abiOptions}
-            onChange={(value) => {
-              handleContractNameChange(value);
-              if (!contracts[value]) return;
-              setAbi(contracts[value].abi);
-              setAddress(contracts[value].address);
-            }}
-            value={contractName}
-            placeholder="Select ABI"
-          >
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="ghost" className="flex gap-2">
-                  New
-                  <FileIcon />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Load ABI</DialogTitle>
-                  <DialogDescription>
-                    Upload an ABI to interact with a contract.
-                  </DialogDescription>
-                </DialogHeader>
-                <form
-                  className="grid gap-4 py-4"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    save();
-                  }}
-                >
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Name
-                    </Label>
-                    <Input
-                      id="name"
-                      value={contractName}
-                      onChange={(e) => setContractName(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label className="text-right">Address</Label>
-                    <Input
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      className="col-span-3 max-h-[100px] font-mono"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label className="text-right">ABI</Label>
-                    <Textarea
-                      value={abiString}
-                      onChange={(e) => setAbiString(e.target.value)}
-                      className="col-span-3 max-h-[100px] font-mono"
-                    />
-                    <div className="grid gap-2">{abiString && error}</div>
-                  </div>
-                </form>
-                <DialogFooter>
-                  <DialogClose>
-                    <Button type="submit" onClick={save}>
-                      Save changes
-                    </Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </SearchSelect>
-        </div>
-        {abi && (
-          <div className="flex flex-wrap gap-2 overflow-x-scroll border-t">
-            <List
-              value={functionSignature}
-              onChange={handleFunctionSignatureChange}
-              options={options || []}
-            />
+    <div className="grid lg:grid-cols-5">
+      <div className="col-span-1 pb-12">
+        <div className="space-y-4 py-4">
+          <div className="px-3 py-2">
+            <SearchSelect
+              options={abiOptions}
+              onChange={(value) => {
+                handleContractNameChange(value);
+                if (!contracts[value]) return;
+                setAbi(contracts[value].abi);
+                setAddress(contracts[value].address);
+              }}
+              value={contractName}
+              placeholder="Select ABI"
+            >
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" className="flex gap-2">
+                    New
+                    <FileIcon />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Load ABI</DialogTitle>
+                    <DialogDescription>
+                      Upload an ABI to interact with a contract.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <form
+                    className="grid gap-4 py-4"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      save();
+                    }}
+                  >
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="name" className="text-right">
+                        Name
+                      </Label>
+                      <Input
+                        id="name"
+                        value={contractName}
+                        onChange={(e) => setContractName(e.target.value)}
+                        className="col-span-3"
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label className="text-right">Address</Label>
+                      <Input
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        className="col-span-3 max-h-[100px] font-mono"
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label className="text-right">ABI</Label>
+                      <Textarea
+                        value={abiString}
+                        onChange={(e) => setAbiString(e.target.value)}
+                        className="col-span-3 max-h-[100px] font-mono"
+                      />
+                      <div className="grid gap-2">{abiString && error}</div>
+                    </div>
+                  </form>
+                  <DialogFooter>
+                    <DialogClose>
+                      <Button type="submit" onClick={save}>
+                        Save changes
+                      </Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </SearchSelect>
           </div>
-        )}
-      </Card>
-      {functionSignature && functionsABIs && (
-        <Function
-          address={address}
-          functionSignature={functionSignature}
-          functionABIs={functionsABIs}
-        />
-      )}
+          {abi && (
+            <div className="flex flex-wrap gap-2 overflow-x-scroll border-t">
+              <List
+                value={functionSignature}
+                onChange={handleFunctionSignatureChange}
+                options={options || []}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="col-span-4 flex items-start justify-between">
+        <div className="space-y-1">
+          {functionSignature && functionsABIs && (
+            <Function
+              address={address}
+              functionSignature={functionSignature}
+              functionABIs={functionsABIs}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 };

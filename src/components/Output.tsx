@@ -30,13 +30,13 @@ const Output = ({
   data: unknown;
   outputs: readonly AbiParameter[];
 }) => {
-  if (data === undefined || data === null) return "No response";
+  if (data === null) return "null";
   if (outputs.length === 0) return null;
   if (!Array.isArray(data)) return <Data data={data} type={outputs[0].type} />;
   const multiple = data.length !== outputs.length;
 
   return (
-    <Table className="font-mono">
+    <Table className="border">
       <TableBody>
         {data.map((dataPart, index) => {
           const { type: outputType, name } = multiple
@@ -46,7 +46,7 @@ const Output = ({
           return (
             <TableRow key={`${name}-${index}`}>
               <TableCell>
-                {name} <Badge variant="outline">{type}</Badge>{" "}
+                {name} <Badge variant="outline">{type}</Badge>
               </TableCell>
               <TableCell>{<Data data={dataPart} type={type} />}</TableCell>
             </TableRow>

@@ -23,6 +23,7 @@ import Output from "./Output";
 import { ConnectWallet } from "./Profile";
 import { Hash } from "viem";
 import { useToast } from "./ui/use-toast";
+import { ArrowDownIcon, ClockIcon } from "@radix-ui/react-icons";
 
 type Props = {
   functionABIs: AbiFunction[];
@@ -154,9 +155,10 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
         <CardContent className="grid gap-4">
           {inputs.map(({ type, name }, i) => (
             <div className="grid gap-2" key={name}>
-              <Label htmlFor="email">{name}</Label>
+              <Label className="font-mono">{name}</Label>
               <Input
                 type="text"
+                className="font-mono"
                 value={args?.[i]?.toString()}
                 onChange={({ target: { value } }) => {
                   const newArgs = [...(args || [])];
@@ -170,11 +172,14 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
               />
             </div>
           ))}
-          {inputs.length === (args?.length || 0) && loading ? (
-            <Skeleton />
-          ) : (
-            <Output outputs={outputs} data={readData} />
-          )}
+          {readLoading ? <ClockIcon /> : <ArrowDownIcon />}
+          {readLoading ? (
+            <Skeleton className="h-4 w-20" />
+          ) : readData !== undefined ? (
+            <div className="gap-1 border p-2 font-mono">
+              <Output outputs={outputs} data={readData} />
+            </div>
+          ) : null}
           {stateMutability !== "view" &&
             (isConnected ? (
               <Button onClick={handleSend}>{writeStatus}</Button>
