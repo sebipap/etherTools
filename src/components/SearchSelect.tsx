@@ -41,7 +41,7 @@ const SearchSelect = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className=" justify-between"
+          className="justify-between w-full"
         >
           {value
             ? options.find((op) => op.value === value)?.label
