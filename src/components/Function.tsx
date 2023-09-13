@@ -87,8 +87,6 @@ const Function = ({ functionABIs, address, functionSignature }: Props) => {
     functionName: functionABI.name,
   });
 
-  const loading = readLoading || writeLoading;
-
   const { status } = useWaitForTransaction({ hash });
   const { toast } = useToast();
 
