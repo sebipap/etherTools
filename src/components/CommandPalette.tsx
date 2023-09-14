@@ -49,7 +49,7 @@ const CommandPalette = ({
     <>
       <Button
         onClick={() => setOpen(true)}
-        className="w-full justify-start border p-2"
+        className="justify-start border p-2"
         variant="outline"
       >
         <p className="text-muted-foreground text-sm">
